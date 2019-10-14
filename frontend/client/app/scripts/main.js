@@ -5,7 +5,7 @@ const left = document.querySelector('.left')
 const right = document.querySelector('.right')
 
 const app = new Application()
-const ws = new WebSocket(`${window.location.protocol === 'http' ? 'ws' : 'wss'}://api.${window.location.host}/socket.io/?EIO=3&transport=websocket`)
+const ws = new WebSocket(`${window.location.protocol === 'http:' ? 'ws' : 'wss'}://api.${window.location.host}/socket.io/?EIO=3&transport=websocket`)
 ws.addEventListener('message', function(event) {
   if (event.data.includes('left')) {
     app.cameraManager.rotate(1)
