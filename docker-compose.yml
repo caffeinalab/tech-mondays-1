@@ -7,8 +7,10 @@ services:
   api:
     image: '${CI_REGISTRY}/${CI_PROJECT_PATH}/${CI_COMMIT_REF_NAME}/api'
     environment:
-      VIRTUAL_HOST: 'api.${COMPOSE_PROJECT_NAME}.test'
+      VIRTUAL_HOST: 'api.${VIRTUAL_HOST}'
       VIRTUAL_PORT: 80
+      LETSENCRYPT_HOST: '${VIRTUAL_HOST}'
+      LETSENCRYPT_EMAIL: '${LETSENCRYPT_EMAIL}'
     expose:
       - "80"
     networks:
