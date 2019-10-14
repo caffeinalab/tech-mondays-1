@@ -6,7 +6,6 @@ networks:
       name: front-tier
 services:
   api:
-    image: node:10
     entrypoint: /app/entrypoint.sh
     volumes:
       - '../api:/app'

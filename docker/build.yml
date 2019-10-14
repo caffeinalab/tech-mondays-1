@@ -1,5 +1,14 @@
 version: '3'
 services:
+  api:
+    image: '${CI_REGISTRY}/${CI_PROJECT_PATH}/${CI_COMMIT_REF_NAME}/api'
+    build:
+      context: ..
+      dockerfile: ./api/Dockerfile
+      args:
+        CI_COMMIT_REF_NAME: '${CI_COMMIT_REF_NAME}'
+        CI_REGISTRY: '${CI_REGISTRY}'
+        CI_PROJECT_PATH: '${CI_PROJECT_PATH}'
   frontend_nginx:
     image: '${CI_REGISTRY}/${CI_PROJECT_PATH}/${CI_COMMIT_REF_NAME}/frontend_nginx'
     build:
