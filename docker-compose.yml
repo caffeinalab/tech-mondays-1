@@ -5,6 +5,7 @@ networks:
       name: front-tier
 services:
   api:
+    image: '${CI_REGISTRY}/${CI_PROJECT_PATH}/${CI_COMMIT_REF_NAME}/api'
     entrypoint: /app/entrypoint.sh
     volumes:
       - './api:/app'
