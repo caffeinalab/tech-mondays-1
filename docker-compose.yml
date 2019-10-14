@@ -6,9 +6,6 @@ networks:
 services:
   api:
     image: '${CI_REGISTRY}/${CI_PROJECT_PATH}/${CI_COMMIT_REF_NAME}/api'
-    entrypoint: /app/entrypoint.sh
-    volumes:
-      - './api:/app'
     environment:
       VIRTUAL_HOST: 'api.${COMPOSE_PROJECT_NAME}.test'
       VIRTUAL_PORT: 80

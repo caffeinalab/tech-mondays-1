@@ -1,5 +1,3 @@
-#! /bin/bash
-
-cd /app
+#! /bin/sh
 npm i
 npm start
