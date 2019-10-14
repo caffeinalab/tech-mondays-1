@@ -1,0 +1,16 @@
+@import "./colors";
+@import "./typography";
+
+// Breakpoints
+$mq-breakpoints: (
+    xs: 370px,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px
+) !default;
+$layers: (
+    header: 2,
+    modal: 10,
+    loader: 20
+);

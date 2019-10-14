@@ -1,0 +1,41 @@
+@import "variables/critical";
+@import "node_modules/sass-mq/mq";
+@import "base/mixins";
+// Base style
+@import "base/base";
+
+// Grid
+@import "grid/grid";
+
+
+h1.left,
+h1.right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  display: flex;
+  opacity: 0;
+
+  align-items: center;
+  align-content: center;
+
+  padding: 2rem;
+
+  color: white;
+
+  font-size: 3vw;
+  line-height: 1.1em;
+}
+
+h1.left {
+  justify-content: flex-end;
+
+  text-align: right;
+}
+
+h1.right {
+  text-align: left;
+}

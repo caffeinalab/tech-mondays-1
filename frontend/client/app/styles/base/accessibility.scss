@@ -1,0 +1,27 @@
+// modernizr hover
+@mixin pointer-hover {
+  @if build-env() != 'production' {
+    &:hover {
+      @content;
+    }
+  } else {
+    html.no-touchevents &:hover {
+        @content;
+    }
+  }
+}
+
+// what input focus
+@mixin aria-focus {
+  html[data-whatintent="keyboard"] &:focus {
+      @content;
+  }
+}
+
+[data-whatintent='mouse'] *:focus {
+  outline: none;
+}
+
+[data-whatintent='keyboard'] *:focus {
+  outline: solid 1px $color-border;
+}

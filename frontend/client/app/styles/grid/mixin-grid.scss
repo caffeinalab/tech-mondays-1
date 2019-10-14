@@ -1,0 +1,75 @@
+@mixin make-container() {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: ($grid-gutter-width/2);
+  padding-left: ($grid-gutter-width/2);
+}
+
+// For each breakpoint, define the maximum width of the container in a media query
+@mixin make-container-max-widths($max-widths: $container-max-widths, $breakpoints: $grid-breakpoints) {
+  @each $breakpoint, $container-max-width in $max-widths {
+    @include mq($breakpoint) {
+      max-width: $container-max-width;
+    }
+  }
+}
+
+@mixin make-row() {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  margin-right: ($grid-gutter-width / -2);
+  margin-left: ($grid-gutter-width / -2);
+}
+
+@mixin make-col($size, $columns: $grid-size-columns) {
+  flex: 0 0 percentage($size / $columns);
+
+  max-width: percentage($size / $columns);
+}
+
+@mixin make-col-offset($size, $columns: $grid-size-columns) {
+  $num: $size / $columns;
+
+  margin-left: if($num == 0, 0, percentage($num));
+}
+
+
+@mixin make-grid-columns($columns: $grid-size-columns, $gutter: $grid-gutter-width, $breakpoints: $grid-breakpoints) {
+  @if ($gutter != $grid-gutter-width) {
+    .row [class*="col-"] {
+      padding-right: ($gutter / 2);
+      padding-left: ($gutter / 2);
+    }
+  }
+
+  @each $size in $grid-generated-columns {
+    .col-#{$size} {
+      @include make-col($size, $columns);
+    }
+  }
+
+  @each $size in $grid-generated-offsets {
+    .offset-#{$size} {
+      @include make-col-offset($size, $columns);
+    }
+  }
+
+  @each $breakpoint in map-keys($breakpoints) {
+    @include mq($breakpoint) {
+      @each $size in $grid-generated-columns {
+        .col-#{$breakpoint}-#{$size} {
+          @include make-col($size, $columns);
+        }
+      }
+
+      @each $size in $grid-generated-offsets {
+        .offset-#{$breakpoint}-#{$size} {
+          @include make-col-offset($size, $columns);
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,171 @@
+// ==========================================================================
+// Mixins and functions
+//
+// Note: always put function at the beginning of the sub-section
+// ==========================================================================
+
+// Generic
+// ==========================================================================
+
+@function z-index($level: "base") {
+  @return map-get($layers, $level);
+}
+
+// Elements
+// ==========================================================================
+
+// https://css-tricks.com/aspect-ratio-boxes/#article-header-id-6
+@mixin aspect-ratio($width, $height) {
+  &:before {
+    display: block;
+
+    width: 100%;
+    height: 0;
+    padding-bottom: $height / $width * 100%;
+
+    content: "";
+  }
+}
+
+// https://css-tricks.com/centering-in-the-unknown/
+@mixin v-align() {
+  &:before {
+    display: inline-block;
+
+    height: 100%;
+
+    content: "";
+    vertical-align: middle;
+
+    font-size: 0;
+  }
+}
+
+@mixin boost-performance ($translate: true) {
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+
+  @if ($translate) {
+    transform: translate3d(0, 0, 0);
+
+    will-change: transform;
+  }
+}
+
+@mixin clearfix {
+  &::after {
+    display: table;
+    clear: both;
+
+    content: "";
+  }
+}
+
+@mixin ir($image-url, $context: false) {
+  width: image-width($image-url);
+  height: image-height($image-url);
+
+  background: image-url($image-url) no-repeat 0 0;
+  background-size: 100% auto;
+}
+
+@mixin img-responsive($display: block) {
+  display: $display;
+
+  height: auto;
+  max-width: 100%;
+}
+
+
+//see https://github.com/tinganho/compass-placeholder
+@mixin placeholder {
+  &::-webkit-input-placeholder {
+    @content;
+  }
+
+  &::-moz-placeholder {
+    @content;
+  }
+
+  &:-moz-placeholder {
+    @content;
+  }
+
+  &:-ms-input-placeholder {
+    @content;
+  }
+}
+
+@mixin text-ellipsis {
+  overflow: hidden;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@mixin visually-hidden {
+  position: absolute;
+
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+
+  border: 0;
+}
+
+@mixin reset-button {
+  overflow: visible;
+
+  width: auto;
+  margin: 0;
+  padding: 0;
+
+  text-align: inherit;
+  /* inherit font & color from ancestor */
+
+  color: inherit;
+  border: none;
+  background: transparent;
+  /* Normalize `line-height`. Cannot be changed from `normal` in Firefox 4+. */
+
+  line-height: normal;
+  /* Corrects font smoothing for webkit */
+
+  -webkit-font-smoothing: inherit;
+  -moz-osx-font-smoothing: inherit;
+  /* Corrects inability to style clickable `input` types in iOS */
+  -webkit-appearance: none;
+}
+
+@function rem($pixels) {
+  @if (unitless($pixels)) {
+    $pixels: $pixels * 1px;
+  }
+  @return #{$pixels / $font-size-default}rem;
+}
+
+
+@mixin generate-typography($list: $headings) {
+  @each $tagName, $sizes  in $list {
+    $mobile: nth($sizes, 1);
+    $desktop: nth($sizes, 2);
+
+    #{$tagName},
+    .#{$tagName} {
+      margin-top: 0;
+
+      font-size: rem(nth($mobile, 1));
+      font-weight: nth($mobile, 3);
+      line-height: rem(nth($mobile, 2));
+
+      @include mq(md) {
+        font-size: rem(nth($desktop, 1));
+        line-height: rem(nth($desktop, 2));
+      }
+    }
+  }
+}

@@ -1,0 +1,56 @@
+
+/*
+HOW USE IT
+image(
+  'flower', // basename
+  'jpg', // extension
+  'Pink flower', // alt
+  true, // webp is allowed
+  [
+    [800, 800], // define mediaquery in px and string to add to basename to specific asset
+    [450, 450],
+    [300, 300]
+  ],
+)
+*/
+
+{% set defaultSizes =[
+  [800],
+  [450, 430],
+  [300]
+] %}
+
+{% macro image(name, ext, alt = '', sizes = false, webp = false, blurried = false) %}
+  {% if sizes == false %}
+    {% set sizes = defaultSizes %}
+  {% endif %}
+
+  {% if ext == 'jpg' %}
+    {% set type = 'image/jpeg' %}
+  {% else %}
+    {% set type = 'image/' + ext %}
+  {% endif %}
+
+  <picture>
+    {% if webp %}
+        <source data-srcset="{{name}}.webp" type="{{type}}">
+    {% endif %}
+
+    {% for media, size in sizes %}
+      {% if size %}
+        {% set size = '-' + size %}
+      {% endif %}
+
+      {% if webp %}
+        <source media="(min-width: {{media}}px)" data-srcset="{{name}}{{size}}.webp" type="{{type}}">
+      {% endif %}
+      <source media="(min-width: {{media}}px)" data-srcset="{{name}}{{size}}.{{ext}}" type="{{type}}">
+    {% endfor %}
+
+    {% if blurried %}
+      <img src="{{name}}-blurried.jpg" class="lazyload blurried" data-src="{{name}}.{{ext}}" alt="{{ alt }}">
+    {% else %}
+      <img data-src="{{name}}.{{ext}}" class="lazyload" alt="{{ alt }}">
+    {% endif %}
+  </picture>
+{% endmacro %}

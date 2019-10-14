@@ -1,0 +1,2 @@
+msgid "PO_KEY"
+msgstr "TRADUZIONE ITALIANA"

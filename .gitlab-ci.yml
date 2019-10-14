@@ -1,0 +1,90 @@
+stages:
+  - build
+  - push
+  - deploy
+  - cleanup
+
+variables:
+  PROJECT_NAME: tech-mondays-1
+
+build:
+  stage: build
+  image: registry.caffeina.co/open-source/docker-gitlab-ci:latest
+  before_script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  script:
+    - docker-compose -f ./docker/build.yml build --build-arg CI_COMMIT_REF_NAME=$CI_COMMIT_REF_NAME
+  only:
+    - master
+    - alpa
+    - beta
+
+push:
+  stage: push
+  image: registry.caffeina.co/open-source/docker-gitlab-ci:latest
+  before_script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  script:
+    - docker-compose -f ./docker/build.yml push
+  only:
+    - master
+    - alpa
+    - beta
+
+deploy:
+  stage: deploy
+  image: registry.caffeina.co/open-source/docker-gitlab-ci:latest
+  variables:
+    DOCKER_TLS_VERIFY: "1"
+    DOCKER_HOST: ${N2_DOCKER_HOST}
+    DOCKER_CERT_PATH: ${N2_DOCKER_CERT_PATH}
+    VIRTUAL_HOST: "${CI_COMMIT_REF_NAME}.${CI_PROJECT_NAME}.${DOCKER_MACHINE_NAME}"
+    COMPOSE_PROJECT_NAME: ${CI_PROJECT_NAME}_${CI_COMMIT_REF_NAME}
+    DC_FILE: "docker-compose.yml"
+  script:
+    # Certs
+    - mkdir -p ${DOCKER_CERT_PATH}
+    - echo "${N2_DOCKER_MACHINE_CA}" > ${DOCKER_CERT_PATH}/ca.pem
+    - echo "${N2_DOCKER_CLIENT_CERT}" > ${DOCKER_CERT_PATH}/cert.pem
+    - echo "${N2_DOCKER_CLIENT_KEY}" > ${DOCKER_CERT_PATH}/key.pem
+    # Deploy
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker-compose -f ${DC_FILE} pull
+    - docker-compose -f ${DC_FILE} up -d --remove-orphans
+    # Cleanup
+    - rm -rf ${DOCKER_CERT_PATH}
+  environment:
+    name: ${CI_COMMIT_REF_NAME}
+    url: "http://${CI_COMMIT_REF_NAME}.${CI_PROJECT_NAME}.${DOCKER_MACHINE_NAME}/"
+  #when: manual
+  only:
+    - master
+    - alpa
+    - beta
+
+wipe-data-and-stop:
+  stage: cleanup
+  image: registry.caffeina.co/open-source/docker-gitlab-ci:latest
+  variables:
+    DOCKER_TLS_VERIFY: "1"
+    DOCKER_HOST: ${N2_DOCKER_HOST}
+    DOCKER_CERT_PATH: ${N2_DOCKER_CERT_PATH}
+    VIRTUAL_HOST: "${CI_COMMIT_REF_NAME}.${CI_PROJECT_NAME}.${DOCKER_MACHINE_NAME}"
+    COMPOSE_PROJECT_NAME: ${CI_PROJECT_NAME}_${CI_COMMIT_REF_NAME}
+    DC_FILE: "docker-compose.yml"
+  script:
+    # Certs
+    - mkdir -p ${DOCKER_CERT_PATH}
+    - echo "${N2_DOCKER_MACHINE_CA}" > ${DOCKER_CERT_PATH}/ca.pem
+    - echo "${N2_DOCKER_CLIENT_CERT}" > ${DOCKER_CERT_PATH}/cert.pem
+    - echo "${N2_DOCKER_CLIENT_KEY}" > ${DOCKER_CERT_PATH}/key.pem
+    # STOP
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker-compose -f ${DC_FILE} down -v
+    # Cleanup
+    - rm -rf ${DOCKER_CERT_PATH}
+  when: manual
+  environment:
+    name: ${CI_COMMIT_REF_NAME}
+    action: stop
+

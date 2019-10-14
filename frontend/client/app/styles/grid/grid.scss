@@ -1,0 +1,41 @@
+@import "./config-grid";
+@import "./mixin-grid";
+
+@if $grid-include-base-style {
+  .container {
+    @include make-container();
+    @include make-container-max-widths();
+  }
+
+  // Utilizes the mixin meant for fixed width containers, but with 100% width for fluid, full width layouts.
+  .containerFluid {
+    @include make-container();
+  }
+
+  .row {
+    @include make-row();
+  }
+
+  // Common properties for all breakpoints
+  .row [class*="col-"] {
+    position: relative;
+
+    width: 100%;
+    min-height: 1px; // Prevent columns from collapsing when empty
+    padding-right: ($grid-gutter-width / 2);
+    padding-left: ($grid-gutter-width / 2);
+  }
+
+  .no-gutters {
+    margin-right: 0;
+    margin-left: 0;
+
+    > .col,
+    > [class*="col-"] {
+      padding-right: 0;
+      padding-left: 0;
+    }
+  }
+}
+
+@include make-grid-columns();

@@ -1,0 +1,14 @@
+version: '3'
+services:
+  frontend_client:
+    command:
+      - build:production
+    tty: true
+    environment:
+      NODE_ENV: development
+    volumes:
+      - '../frontend/client/app:/app'
+      - '../frontend/common/views:/app/views'
+      - '../frontend/common/fixtures:/app/fixtures'
+      - '../frontend/common/locales:/app/locales'
+

@@ -1,0 +1,79 @@
+version: '3'
+networks:
+  tech-mondays-1: null
+  front-tier:
+    external:
+      name: front-tier
+services:
+  api:
+    image: node:10
+    entrypoint: /app/entrypoint.sh
+    volumes:
+      - '../api:/app'
+    environment:
+      VIRTUAL_HOST: 'api.${COMPOSE_PROJECT_NAME}.test'
+      VIRTUAL_PORT: 80
+    expose:
+      - "80"
+    networks:
+        - tech-mondays-1
+        - front-tier
+    restart: unless-stopped
+  frontend_nginx:
+    volumes:
+      - '../frontend/client/app/dist/public:/var/static'
+      - '../frontend/common/assets/optimized:/var/assets'
+    networks:
+      - tech-mondays-1
+      - front-tier
+    environment:
+      VIRTUAL_HOST: 'frontend_nginx.${COMPOSE_PROJECT_NAME}.test'
+      VIRTUAL_PORT: 80
+    restart: unless-stopped
+    logging:
+      driver: none
+  frontend_client:
+    command:
+      - dev
+    tty: true
+    environment:
+      NODE_ENV: development
+    volumes:
+      - '../frontend/client/app:/app'
+      - '../frontend/common/views:/app/views'
+      - '../frontend/common/fixtures:/app/fixtures'
+      - '../frontend/common/locales:/app/locales'
+    networks:
+      - tech-mondays-1
+  frontend_tommy:
+    image: 'kopiro/tommy:latest'
+    volumes:
+      - '../frontend/common/assets/original:/src'
+      - '../frontend/common/assets/optimized:/dst'
+    command: '--webserver'
+    networks:
+      - tech-mondays-1
+    logging:
+      driver: none
+    depends_on:
+      - frontend_client
+  frontend_browser-sync:
+    image: >-
+      ${CI_REGISTRY}/${CI_PROJECT_PATH}/${CI_COMMIT_REF_NAME}/frontend_browser-sync
+    build:
+      context: ..
+      dockerfile: ./frontend/browser-sync/docker/Dockerfile
+    volumes:
+      - '../frontend/client/app/config:/source/config'
+      - '../frontend/client/app/node_modules:/source/node_modules'
+      - '../frontend/client/app/scripts:/source/scripts'
+      - '../frontend/client/app/tasks:/source/tasks'
+      - '../frontend/client/app/babel.config.js:/source/babel.config.js'
+    networks:
+      - tech-mondays-1
+      - front-tier
+    environment:
+      VIRTUAL_HOST: '${COMPOSE_PROJECT_NAME}.test'
+      VIRTUAL_PORT: 80
+    depends_on:
+      - frontend_client

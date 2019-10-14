@@ -1,0 +1,3 @@
+## Virtual hosts configuration for tech-mondays-1
+# frontend/client
+127.0.0.1	tech-mondays-1.test

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html class="no-js" lang="">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>{{ pageTitle }}</title>
+    <meta name="description" content="{{ metaDescription }}" />
+    {% block meta %}{% endblock %}
+
+    <link rel="shortcut icon" href="/assets/images/favicon.ico" type="image/x-icon" />
+
+    <!-- mobile meta (hooray!) -->
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="MobileOptimized" content="320" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <link rel="preload" as="style" href="/{{ revisions['css/main.css'] or 'css/main.css' }}" />
+    <link rel="preload" as="script" href="/{{ revisions['js/main.js'] or 'js/main.js' }}" />
+
+    {% if production %}
+        <style> {{criticalCss|safe}} </style>
+    {% else %}
+        <link rel="stylesheet" href="/css/critical.css">
+    {% endif %}
+
+    <link rel="stylesheet" data-href="/{{ revisions['css/main.css'] or 'css/main.css' }}" media="none" onload="if(media!='all')media='all'" />
+
+    {% block head %}
+    {% endblock %}
+
+</head>
+<body class="{{ bodyClass if bodyClass | safe }}">
+
+    {% block main %}
+    {% endblock %}
+
+    <script data-src="/{{ revisions['js/main.js'] or 'js/main.js' }}" defer></script>
+    {% if production %}
+        <script type="text/javascript">{{criticalScript|safe}}</script>
+    {% else %}
+        <script src="/js/critical.js"></script>
+    {% endif %}
+    {# <script async src="/js/independent/lazysizes.js"></script> #}
+</body>
+</html>

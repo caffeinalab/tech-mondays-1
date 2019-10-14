@@ -1,0 +1,17 @@
+{
+	"_comment": "here JSON files you want to use inside views",
+	"_comment2": "It may be a list of , menu items etc...",
+	"link": {
+    "label": "From Fixtures JSON",
+    "url": "http://www.nyan.cat/"
+  },
+	"slides":[
+		{
+			"title": "PO_KEY_3_URL",
+			"url": "PO_KEY_3_URL"
+		},{
+			"title": "PO_KEY_4",
+      "url": "PO_KEY_4_URL"
+		}
+	]
+}

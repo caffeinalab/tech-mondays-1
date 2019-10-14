@@ -1,0 +1,28 @@
+version: '3'
+networks:
+  front-tier:
+    external:
+      name: front-tier
+services:
+  api:
+    image: node:10
+    entrypoint: /app/entrypoint.sh
+    volumes:
+      - '../api:/app'
+    environment:
+      VIRTUAL_HOST: 'api.${COMPOSE_PROJECT_NAME}.test'
+      VIRTUAL_PORT: 80
+    expose:
+      - "80"
+    networks:
+      - front-tier
+  frontend_nginx:
+    image: '${CI_REGISTRY}/${CI_PROJECT_PATH}/${CI_COMMIT_REF_NAME}/frontend_nginx'
+    restart: unless-stopped
+    networks:
+      - front-tier
+    environment:
+      VIRTUAL_HOST: '${VIRTUAL_HOST}'
+      VIRTUAL_PORT: 80
+      LETSENCRYPT_HOST: '${VIRTUAL_HOST}'
+      LETSENCRYPT_EMAIL: '${LETSENCRYPT_EMAIL}'

@@ -1,0 +1,30 @@
+{
+    "argv": {},
+    "repository": {
+        "REPO_EXIST": true,
+        "REPO_URL": "git@git.caffeina.co:internal/sprints/tech-mondays/tech-mondays-1.git"
+    },
+    "services": {
+        "frontend": [
+            "nginx",
+            "common",
+            "client",
+            "browser-sync"
+        ]
+    },
+    "meta": {
+        "DESCRIPTION": "An awesome caffeina project",
+        "VERSION": "1.0.0",
+        "AUTHOR": "Vincent De Feo <vincent.defeo@caffeina.com>",
+        "NAME": "tech-mondays-1"
+    },
+    "git": {
+        "templateBranch": "master"
+    },
+    "folder": "/tech-mondays-1",
+    "replacements": {
+        "NAME": "tech-mondays-1",
+        "GROUP": "internal/sprints/tech-mondays",
+        "IMAGE": "registry.caffeina.co/internal/sprints/tech-mondays/undefined"
+    }
+}

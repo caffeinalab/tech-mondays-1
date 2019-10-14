@@ -1,0 +1,13 @@
+$rem-to-px-fallback: false !default;
+$font-size-default: 16px;
+$font-family-base: Arial, sans;
+$headings: (
+  h1: ( (50px, 56px, 700), (90px, 110px) ),
+  h2: ( (40px,44px, 700), (62px, 74px) ),
+  h3: ( (30px,41px, 700), (40px,44px) ),
+  h4: ( (24px,36px, 700), (32px,44px) ),
+  h5: ( (21px,29px, 400), (26px, 29px) ),
+  h6: ( (19px,24px, 500), (24px, 30px) ),
+  p: ( (18px, 26px, 500), (22px, 30px) ),
+  small: ( (15px, 21px, 400), (16px, 21px) )
+);
