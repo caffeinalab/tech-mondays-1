@@ -9,7 +9,7 @@ services:
     environment:
       VIRTUAL_HOST: 'api.${VIRTUAL_HOST}'
       VIRTUAL_PORT: 80
-      LETSENCRYPT_HOST: '${VIRTUAL_HOST}'
+      LETSENCRYPT_HOST: 'api.${VIRTUAL_HOST}'
       LETSENCRYPT_EMAIL: '${LETSENCRYPT_EMAIL}'
     expose:
       - "80"
