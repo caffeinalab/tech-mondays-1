@@ -15,7 +15,7 @@ export default class Application {
   }
 
   rotateMesh(direction) {
-    TweenMax.to(this.mesh.rotation, 1, {y: -1 * direction})
+    TweenMax.to(this.mesh.rotation, 1, {y: -0.9 * direction})
   }
 
   onInit() {
