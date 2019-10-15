@@ -3,6 +3,7 @@ import {BoxGeometry, MeshNormalMaterial, Mesh} from 'three'
 import CameraManager from './CameraManager'
 import SceneManager from './SceneManager'
 import RendererManager from './RendererManager'
+import { TweenMax } from 'gsap'
 
 export default class Application {
   constructor() {
@@ -11,6 +12,10 @@ export default class Application {
     this.cameraManager = new CameraManager()
 
     this.onInit()
+  }
+
+  rotateMesh(direction) {
+    TweenMax.to(this.mesh.rotation, 1, {y: -1 * direction})
   }
 
   onInit() {

@@ -9,7 +9,7 @@ server.listen(process.env.VIRTUAL_PORT || 80, function() {
 app.get('/rotate/:direction', function(req, res) {
   const {direction} = req.params
   const message = direction === 'left'
-    ? 'La faccia sinistra di questo cubo è verde'
+    ? 'La faccia sinistra di questo cubo è blu'
     : 'La faccia destra di questo cubo è rosa'
 
   io.sockets.emit('rotate', direction)
