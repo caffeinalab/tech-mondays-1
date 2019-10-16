@@ -46,7 +46,7 @@ Then paste this in:
 ```
 
 ### Bring it up!
-just run `./cmd/dev` in the root of this repo, it will build the docker images then start them up.
+just run `./cmd/dev.sh` in the root of this repo, it will build the docker images then start them up.
 
 Frontend is exposed as: [http://tech-mondays-1.test](http://tech-mondays-1.test)
 
