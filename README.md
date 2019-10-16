@@ -18,7 +18,7 @@ Here's the diagram for the Alexa Skill: (made in [Voiceflow](https://www.voicefl
 ### Setup Load Balancer
 You need to have a load balancer up and running in order to resolve the hosts in docker.
 
-Luckily for you [@blimpair](https://github.com/blimpair) has the one you need:
+Luckily for you [@blimpair](https://github.com/blimpair/) has [the one you need](https://github.com/blimpair/loadbalancer):
 
 ```
 mkdir load-balancer
