@@ -8,7 +8,7 @@ Sporting a beautiful cube rendered in WebGL trough Three.js
 
 The idea is to call an API server from an Alexa Skill, collecting variables from the user via voice input.
 
-We pass these values to the web page troug Web Sockets, which executes different actions depeding on the event.
+We send these values over a WebSocket to the web page, which executes different actions depeding on the event.
 
 Here's the diagram for the Alexa Skill: (made in [Voiceflow](https://www.voiceflow.com/))
 
@@ -18,7 +18,7 @@ Here's the diagram for the Alexa Skill: (made in [Voiceflow](https://www.voicefl
 ### Setup Load Balancer
 You need to have a load balancer up and running in order to resolve the hosts in docker.
 
-Luckily for you [https://github.com/blimpair](@blimpair) has the one you need:
+Luckily for you [@blimpair](https://github.com/blimpair) has the one you need:
 
 ```
 mkdir load-balancer
