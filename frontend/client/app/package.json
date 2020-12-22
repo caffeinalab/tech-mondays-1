@@ -92,7 +92,7 @@
         "lodash.camelcase": "^4.3.0",
         "merge-stream": "^2.0.0",
         "node-fetch": "^2.6.0",
-        "node-notifier": "^5.4.0",
+        "node-notifier": "^8.0.1",
         "raw-loader": "^3.0.0",
         "sass-loader": "^7.1.0",
         "sass-mq": "^5.0.0",
